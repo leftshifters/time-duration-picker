@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="MinutesPicker">
+        <attr name="wheel_size" format="integer" />
+        <attr name="pointer_size" format="integer" />
+        <attr name="max" format="integer"></attr>
+        <attr name="show_text" format="boolean"></attr>
+        <attr name="start_angle" format="integer"></attr>
+        <attr name="end_angle" format="integer"></attr>
+        <attr name="text_size" format="integer"></attr>
+        <attr name="init_position" format="integer"></attr>
+        <attr name="color" format="string"></attr>
+        <attr name="wheel_active_color" format="string"></attr>
+        <attr name="wheel_unactive_color" format="string"></attr>
+        <attr name="pointer_color" format="string"></attr>
+        <attr name="pointer_halo_color" format="string"></attr>
+        <attr name="text_color" format="string"></attr>
+    </declare-styleable>
+    
+    <declare-styleable name="HoursPicker">
+        <attr name="h_wheel_size" format="integer" />
+        <attr name="h_pointer_size" format="integer" />
+        <attr name="h_max" format="integer"></attr>
+        <attr name="h_show_text" format="boolean"></attr>
+        <attr name="h_start_angle" format="integer"></attr>
+        <attr name="h_end_angle" format="integer"></attr>
+        <attr name="h_text_size" format="integer"></attr>
+        <attr name="h_init_position" format="integer"></attr>
+        <attr name="h_color" format="string"></attr>
+        <attr name="h_wheel_active_color" format="string"></attr>
+        <attr name="h_wheel_unactive_color" format="string"></attr>
+        <attr name="h_pointer_color" format="string"></attr>
+        <attr name="h_pointer_halo_color" format="string"></attr>
+        <attr name="h_text_color" format="string"></attr>
+    </declare-styleable>
+
+</resources>

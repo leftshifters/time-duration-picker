@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="theme_main_color">#FFF</color>
+    <color name="text_color">#8c8c8c</color>
+    <color name="frame_layout_bk">#f2f2f2</color>
+
+</resources>
