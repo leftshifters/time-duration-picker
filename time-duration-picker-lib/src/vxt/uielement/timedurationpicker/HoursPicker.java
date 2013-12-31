@@ -30,11 +30,11 @@ import android.view.View;
 
 
 class HoursPicker extends View {
+	private boolean visible=false;
 	private static final String STATE_PARENT = "parent";
 	private static final String STATE_ANGLE = "angle";
 
 	private OnCircleSeekBarChangeListener mOnCircleSeekBarChangeListener;
-
 
 	private Paint mPointerHaloPaint;
 
@@ -53,7 +53,7 @@ class HoursPicker extends View {
 	private int conversion = 0;
 	private int max = 100;
 	private SweepGradient s;
-	private int pointer_halo_color,init_position;
+	private int pointer_halo_color, init_position;
 	private boolean block_end = false;
 	private float lastX;
 	private int last_radians = 0;
@@ -69,29 +69,29 @@ class HoursPicker extends View {
 	private int rotationCount = 0;
 	private Paint mWheelColor;
 
-	public HoursPicker(Context context,int radialWidth) {
+	public HoursPicker(Context context, int radialWidth) {
 		super(context);
-		mPointerRadius = (int) (radialWidth*0.06);
-		max =12;
+		mPointerRadius = (int) (radialWidth * 0.06);
+		max = 12;
 		init_position = 0;
 		start_arc = 0;
 		end_wheel = 360;
 		last_radians = end_wheel;
 		if (init_position < start_arc)
 			init_position = calculateTextFromStartAngle(start_arc);
-		
+
 		pointer_halo_color = Color.RED;
 		init();
 		updateLayoutSize(radialWidth, radialWidth);
+//		updateCustomValue(CustomValues.getStartHoursValue());
 	}
-
 
 	private void init() {
 		mWheelColor = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mWheelColor.setShader(s);
 		mWheelColor.setColor(getResources().getColor(R.color.theme_main_color));
 		mWheelColor.setStyle(Paint.Style.FILL_AND_STROKE);
-		
+
 		mPointerHaloPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mPointerHaloPaint.setColor(pointer_halo_color);
 		mPointerHaloPaint.setStrokeWidth(mPointerRadius);
@@ -108,24 +108,25 @@ class HoursPicker extends View {
 		invalidate();
 	}
 
-
 	@Override
 	protected void onDraw(Canvas canvas) {
 
 		canvas.translate(mTranslationOffset, mTranslationOffset);
-		canvas.drawCircle(mColorWheelRectangle.centerX(), mColorWheelRectangle.centerX(),(float)(mColorWheelRadius*1.15), mWheelColor);
+		canvas.drawCircle(mColorWheelRectangle.centerX(),
+				mColorWheelRectangle.centerX(),
+				(float) (mColorWheelRadius * 1.15), mWheelColor);
 
 		canvas.drawCircle(pointerPosition[0], pointerPosition[1],
-				(float)(mPointerRadius), mPointerHaloPaint);
+				(float) (mPointerRadius), mPointerHaloPaint);
 
 	}
 
-	private void updateLayoutSize(int width,int height){
+	private void updateLayoutSize(int width, int height) {
 		int min = Math.min(width, height);
 		setMeasuredDimension(min, min);
 
 		mTranslationOffset = min * 0.5f;
-		mColorWheelRadius = (float) ((mTranslationOffset - mPointerRadius)*0.95);
+		mColorWheelRadius = (float) ((mTranslationOffset - mPointerRadius) * 0.95);
 
 		mColorWheelRectangle.set(-mColorWheelRadius, -mColorWheelRadius,
 				mColorWheelRadius, mColorWheelRadius);
@@ -136,13 +137,13 @@ class HoursPicker extends View {
 
 		pointerPosition = calculatePointerPosition(mAngle);
 	}
-	
+
 	private int calculateTextFromAngle(float angle) {
 		float m = angle - start_arc;
 		if (m < 7 || m > 352) {
-			return 0;
+			return 12;
 		}
-		m -= 7;
+		m -= 14;
 		float f = (float) ((end_wheel - start_arc) / m);
 
 		return (int) (max / f) + 1;
@@ -188,13 +189,15 @@ class HoursPicker extends View {
 		return (float) (((radians + 270) * (2 * Math.PI)) / 360);
 	}
 
-	
 	public int getValue() {
 		return conversion;
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		if(!isVisible()){
+			return false;
+		}
 		float x = event.getX() - mTranslationOffset;
 		float y = event.getY() - mTranslationOffset;
 
@@ -226,6 +229,9 @@ class HoursPicker extends View {
 				textInt = (calculateTextFromAngle(arc_finish_radians));
 				pointerPosition = calculatePointerPosition(mAngle);
 				invalidate();
+				if (mOnCircleSeekBarChangeListener != null)
+					mOnCircleSeekBarChangeListener.onProgressChanged(this,
+							textInt, true);
 			}
 			break;
 		case MotionEvent.ACTION_MOVE:
@@ -317,8 +323,8 @@ class HoursPicker extends View {
 		} else {
 			angle = calculateAngleFromRadians(diffRoundUp + 30);
 		}
-		float x = (float) ((mColorWheelRadius*0.95) * Math.cos(angle));
-		float y = (float) ((mColorWheelRadius *0.95) * Math.sin(angle));
+		float x = (float) ((mColorWheelRadius * 0.95) * Math.cos(angle));
+		float y = (float) ((mColorWheelRadius * 0.95) * Math.sin(angle));
 
 		return new float[] { x, y };
 	}
@@ -358,8 +364,15 @@ class HoursPicker extends View {
 		return false;
 	}
 
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
 	
-	public void setUpdatedHoursValue(int newHoursValue){
+	private void updateCustomValue(int newHoursValue){
 		arc_finish_radians = (int) calculateAngleFromText(newHoursValue) - 90;
 
 		if (arc_finish_radians > end_wheel)
@@ -370,5 +383,4 @@ class HoursPicker extends View {
 
 		invalidate();
 	}
-	
 }

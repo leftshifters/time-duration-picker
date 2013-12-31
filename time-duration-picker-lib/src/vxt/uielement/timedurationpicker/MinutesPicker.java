@@ -29,6 +29,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 class MinutesPicker extends View {
+	private boolean visible;
+	
 	private static final String STATE_PARENT = "parent";
 	private static final String STATE_ANGLE = "angle";
 
@@ -184,6 +186,9 @@ class MinutesPicker extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		if(!isVisible()){
+			return false;
+		}
 		float x = event.getX() - mTranslationOffset;
 		float y = event.getY() - mTranslationOffset;
 
@@ -313,6 +318,16 @@ class MinutesPicker extends View {
 
 	public void setOnSeekBarChangeListener(OnCircleSeekBarChangeListener l) {
 		mOnCircleSeekBarChangeListener = l;
+	}
+
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 }

@@ -136,6 +136,8 @@ public class CustomTimePicker {
 			hoursTextView.setTextColor(defaultTextColor);
 			hoursLayout.startAnimation(exitAnim);
 			hoursLayout.setVisibility(View.GONE);
+			minutesPicker.setVisible(true);
+			hourPicker.setVisible(false);
 		}
 	}
 
@@ -149,8 +151,9 @@ public class CustomTimePicker {
 			minutesLayout.setVisibility(View.GONE);
 			hoursTextView.setTextColor(Color.RED);
 			hoursLayout.startAnimation(enterAnim);
-			hourPicker.setUpdatedHoursValue(get_HOURS());
 			hoursLayout.setVisibility(View.VISIBLE);
+			minutesPicker.setVisible(false);
+			hourPicker.setVisible(true);
 		}
 	}
 
